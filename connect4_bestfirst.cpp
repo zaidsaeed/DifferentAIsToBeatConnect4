@@ -3,7 +3,6 @@ using namespace std;
 #include <iostream>
 
 int main(){
-    cout << "HELLO" << endl;
     int board[6][7] = {0};
     Connect4 c4 = Connect4();
     bool gameOver = false;
@@ -16,14 +15,20 @@ int main(){
         if (turn == 1){
             cout << "Player " << turn << ". Please select a number between 0 and 6" << endl;
             cin >> columnNumber;
-            c4.insertIntoBoard(columnNumber, board, turn);
+            while (c4.insertIntoBoard(columnNumber, board, turn) == 1){
+                columnNumber = columnNumber + 1;
+                cout << "Column chosen is full, the following column has been selected for you. Column " << columnNumber << endl;
+            }
             cout << "After player " << turn << "'s move, the board is now:" << endl;
             c4.printBoard(board);
         }
         else if (turn == 2){
             int colNum = c4.insertIntoBoardForScore(board, turn);
             cout << "Computer has chosen " << colNum << endl;
-            c4.insertIntoBoard(colNum, board, turn);
+            while (c4.insertIntoBoard(colNum, board, turn) == 1){
+                colNum = colNum + 1;
+                cout << "Column chosen is full, the following column has been selected for you. Column " << colNum << endl;
+            }
             cout << "After computer " << turn << "'s move, the board is now:" << endl;
             c4.printBoard(board);
         }
