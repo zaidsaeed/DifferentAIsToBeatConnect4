@@ -65,13 +65,15 @@ int Connect4::evaluateWindow(int window[4], int score){
         score = score + 100;
     }else if (turnCount == 3 && zeroCount == 1){
         score = score + 5;
-    }else if(oppCount == 3 && zeroCount == 1){
-        score = score - 4;
     }else if (turnCount == 2 && zeroCount == 2){
         score = score + 2;
     }
 
-    cout << "score is now : " << score << endl;
+    if(oppCount == 3 && turnCount == 1){
+        score = score + 70;
+    }
+
+    // cout << "score is now : " << score << endl;
 
     return score;
     
@@ -103,8 +105,10 @@ int Connect4::insertIntoBoardForScore(int board[6][7], int turn){
             }
         }
         insertIntoBoard(columnNumber, newBoard, turn);
+        cout << "testBoard is" << endl;
+        printBoard(newBoard);
         newScore = scorePosition(newBoard, turn);
-        cout << "Column Number: " << columnNumber << " , yields the score : " << newScore << endl;
+        // cout << "Column Number: " << columnNumber << " , yields the score : " << newScore << endl;
         if(maxScore < newScore){
             maxScore = newScore;
             maxColNum = columnNumber;
@@ -141,12 +145,12 @@ int Connect4::scorePosition(int board[6][7], int turn){
     // }
     
     // Check horizontal
-    for(int i = 0; i< 6; i++){
-        for (int j =0; j<4; j++){
-            int hwindow[4] = {board[i][j], board[i][j+1], board[i][j+2], board[i][j+3]};
-            score = score + evaluateWindow(hwindow, score);
-        }
-    }
+    // for(int i = 0; i<6; i++){
+    //     for (int j =0; j<4; j++){
+    //         int hwindow[4] = {board[i][j], board[i][j+1], board[i][j+2], board[i][j+3]};
+    //         score = score + evaluateWindow(hwindow, score);
+    //     }
+    // }
 
     //Check vertical
     for(int i = 0; i< 3; i++){
