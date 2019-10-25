@@ -47,10 +47,11 @@ int Connect4::determineWinner(int board[6][7], int turn){
 
 }
 
-int Connect4::evaluateWindow(int window[4], int score){
+int Connect4::evaluateWindow(int window[4]){
     int turnCount = 0;
     int zeroCount = 0;
     int oppCount = 0;
+    int score = 0;
     for (int i = 0; i < 4; i++){
         if(window[i] == 0){
             zeroCount = zeroCount + 1;
@@ -64,13 +65,13 @@ int Connect4::evaluateWindow(int window[4], int score){
     if(turnCount == 4){
         score = score + 100;
     }else if (turnCount == 3 && zeroCount == 1){
-        score = score + 5;
+        score = score + 3;
     }else if (turnCount == 2 && zeroCount == 2){
         score = score + 2;
     }
 
-    if(oppCount == 3 && turnCount == 1){
-        score = score + 70;
+    if(oppCount == 3 && zeroCount == 1){
+        score = score - 4;
     }
 
     // cout << "score is now : " << score << endl;
@@ -113,9 +114,6 @@ int Connect4::insertIntoBoardForScore(int board[6][7], int turn){
             maxScore = newScore;
             maxColNum = columnNumber;
         }
-
-        cout << "maxScore is: " << maxScore << endl;
-        cout << "Column finally chosen is: " << maxColNum << endl;
     }
     return maxColNum;
     
@@ -145,46 +143,36 @@ int Connect4::scorePosition(int board[6][7], int turn){
     // }
     
     // Check horizontal
-    // for(int i = 0; i<6; i++){
-    //     for (int j =0; j<4; j++){
-    //         int hwindow[4] = {board[i][j], board[i][j+1], board[i][j+2], board[i][j+3]};
-    //         score = score + evaluateWindow(hwindow, score);
-    //     }
-    // }
+    for(int i = 0; i<6; i++){
+        for (int j =0; j<4; j++){
+            int hwindow[4] = {board[i][j], board[i][j+1], board[i][j+2], board[i][j+3]};
+            score = score + evaluateWindow(hwindow);
+        }
+    }
 
     //Check vertical
     for(int i = 0; i< 3; i++){
         for(int j = 0; j < 7; j++){
             int vwindow[4] = {board[i][j], board[(i+1)][j], board[i+2][j], board[i+3][j]};
-            score = score + evaluateWindow(vwindow, score);
+            score = score + evaluateWindow(vwindow);
         }
     }
 
-    // // //Check diagonal up
-    // for (int i=0; i<3; i++) {
-    //     for (int j=0; j<4; j++) {
-    //         if (board[i][j] == turn && board[i+1][j+1] == turn && board[i+2][j+2] == turn && board[i+3][j+3] == turn){
-    //             score = score + 100;
-    //         }else if (board[i][j] == turn && board[i+1][j+1] == turn && board[i+2][j+2] == turn && board[i+3][j+3] == 0){
-    //             score = score + 75;
-    //         }else if (board[i][j] == turn && board[i+1][j+1] == turn && board[i+2][j+2] == 0 && board[i+3][j+3] == 0){
-    //             score = score + 50;
-    //         }
-    //     }
-    // }
+    //Check diagonal up
+    for (int i=0; i<3; i++) {
+        for (int j=0; j<4; j++) {
+            int dwup[4] = {board[i][j], board[i+1][j+1], board[i+2][j+2], board[i+3][j+3]};
+            score = score + evaluateWindow(dwup);
+        }
+    }
 
-    // // //Check diagonal down
-    // for(int i=0; i<5; i++){
-    //     for(int j=3; j<6; j++){
-    //         if (board[i][j] == turn && board[i+1][j-1] == turn && board[i+2][j-2] == turn && board[i+3][j-3] == turn){
-    //             score = score + 100;
-    //         }else if (board[i][j] == turn && board[i+1][j-1] == turn && board[i+2][j-2] == turn && board[i+3][j-3] == 0){
-    //             score = score + 75;
-    //         }else if (board[i][j] == turn && board[i+1][j-1] == turn && board[i+2][j-2] == 0 && board[i+3][j-3] == 0){
-    //             score = score + 50;
-    //         }
-    //     }
-    // }
+    //Check diagonal down
+    for(int i=0; i<5; i++){
+        for(int j=3; j<6; j++){
+            int dwDn[4] = {board[i][j], board[i+1][j-1], board[i+2][j-2], board[i+3][j-3]};
+            score = score + evaluateWindow(dwDn);
+        }
+    }
     return score;
 }
 

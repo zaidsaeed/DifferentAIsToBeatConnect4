@@ -7,7 +7,7 @@ class Connect4{
         int scorePosition(int board[6][7], int turn);
         int insertIntoBoardForScore(int board[6][7], int turn);
         int minimax(int board[6][7], int depth, int turn);
-        int evaluateWindow(int window[4], int score);
+        int evaluateWindow(int window[4]);
 };
 
 
