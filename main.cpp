@@ -1,6 +1,8 @@
 #include "connect4.h"
 using namespace std;
 #include <iostream>
+#include <vector>
+#include <limits>
 
 int main(){
     int board[6][7] = {0};
@@ -23,13 +25,12 @@ int main(){
             c4.printBoard(board);
         }
         else if (turn == 2){
-            int colNum = c4.insertIntoBoardForScore(board, turn);
-            cout << "Computer has chosen " << colNum << endl;
-            while (c4.insertIntoBoard(colNum, board, turn) == 1){
-                colNum = colNum + 1;
-                cout << "Column chosen is full, the following column has been selected for you. Column " << colNum << endl;
-            }
+            // vector<int> valid_locations = c4.getValidLocations(board);
+            // int colNum = c4.insertIntoBoardForScore(board, turn, valid_locations);
+            pair<int, int> choice = c4.minimax(board, 5, numeric_limits<int>::min(), numeric_limits<int>::max(), true);
+            cout << "Computer has chosen " << choice.first << endl;
             cout << "After computer " << turn << "'s move, the board is now:" << endl;
+            c4.insertIntoBoard(choice.first, board, turn);
             c4.printBoard(board);
         }
 
